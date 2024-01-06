@@ -2,19 +2,30 @@
 // elements are:
 // FIRE, WATER, PLANT, LIGHT, DARK, SPIRIT, ELECTRIC, WIND, EARTH, CORROSION, COMBAT, METAL
 
+use std::{collections::HashMap, fmt};
+use lazy_static::*;
+
 // good_against/bad_against has to worry about lifetimes - just use static lifetime
 #[derive(Debug, Clone, Copy)]
 pub struct Element {
-    name: &'static str,
-    good_against: &'static[&'static str],
-    bad_against: &'static[&'static str],
+    pub name: &'static str,
+    pub good_against: &'static[&'static str],
+    pub bad_against: &'static[&'static str],
 }
+
+// impl fmt::Debug for Element {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         write!(f, "{}: Good Against: {:#?} | Bad Against {:#?}", self.name.to_uppercase(), self.good_against, self.bad_against)
+//     }
+// }
 
 // impl Element {
 //     fn new(name: &'static str, good_against: &'static[&'static str], bad_against: &'static[&'static str]) -> Element {
 //         Element{name, good_against, bad_against}
 //     }
 // }
+
+
 
 pub static FIRE:Element = Element { name: "fire",
 good_against: &["plant", "electric", "metal"],
@@ -63,6 +74,31 @@ bad_against: &["dark", "earth", "earth"]};
 pub static METAL:Element = Element { name: "metal",
 good_against: &["spirit", "combat"],
 bad_against: &["fire", "corrosion"]};
+
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref ELEMENTS: HashMap<&'static str, Element> = {
+        let mut m = HashMap::new();
+        m.insert("fire", self::FIRE);
+        m.insert("water", self::WATER);
+        m.insert("plant", self::PLANT);
+        m.insert("light", self::LIGHT);
+        m.insert("dark", self::DARK);
+        m.insert("spirit", self::SPIRIT);
+        m.insert("electric", self::ELECTRIC);
+        m.insert("wind", self::WIND);
+        m.insert("earth", self::EARTH);
+        m.insert("corrosion", self::CORROSION);
+        m.insert("combat", self::COMBAT);
+        m.insert("metal", self::METAL);
+        m
+    };
+}
+
+pub fn show_element(element: &String) -> Option<&'static Element> {
+    let t = element.to_lowercase();
+    self::ELEMENTS.get(t.as_str())
+}
 
 // create a fn that returns our dataset. We need a fn as the data references itself, so cant have static values.
 // pub fn elements() -> HashMap<String, Element> {
