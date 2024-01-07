@@ -48,8 +48,16 @@ fn main() {
                         }
                     }
                 },
-                args::BeastSubCommand::Match(_c) => {},
-                &args::BeastSubCommand::List => {
+                args::BeastSubCommand::Match(_c) => {
+                    match beasts::match_beasts(&_c.first, &_c.second) {
+                        None => {println!("One or more beasts not found with those names.")},
+                        Some(x) => { println!("{}", x.as_str())}
+                    }
+                },
+                args::BeastSubCommand::Swap(_c) => {
+
+                },
+                args::BeastSubCommand::List => {
                     // just print out all the elements
                     println!("BEASTS:");
                     for value in &*beasts::BEASTS {

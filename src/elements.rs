@@ -19,12 +19,6 @@ pub struct Element {
 //     }
 // }
 
-// impl Element {
-//     fn new(name: &'static str, good_against: &'static[&'static str], bad_against: &'static[&'static str]) -> Element {
-//         Element{name, good_against, bad_against}
-//     }
-// }
-
 
 
 pub static FIRE:Element = Element { name: "fire",

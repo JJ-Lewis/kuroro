@@ -35,8 +35,16 @@ pub enum BeastSubCommand {
     Show(ShowBeast),
     /// show specific beast matchups
     Match(MatchBeast),
+    /// decide what beast to swap to
+    Swap(SwapBeast),
     /// list all beasts
     List
+}
+
+#[derive (Debug, Args)]
+pub struct SwapBeast {
+    /// name of the beast
+    pub name: String
 }
 
 #[derive (Debug, Args)]
