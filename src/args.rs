@@ -42,15 +42,15 @@ pub enum BeastSubCommand {
 #[derive (Debug, Args)]
 pub struct ShowBeast {
     /// name of the Beast
-    name: String
+    pub name: String
 }
 
 #[derive (Debug, Args)]
 pub struct MatchBeast {
     /// name of the first beast
-    first: String,
+    pub first: String,
     /// name of the second beast
-    second: String
+    pub second: String
 }
 
 #[derive(Debug, Args)]

@@ -38,9 +38,24 @@ fn main() {
          // handle all beast subcommands
          Flag::Beast (_i) => {
             match &_i.command {
-                args::BeastSubCommand::Show(_c) => {},
+                args::BeastSubCommand::Show(_c) => {
+                    match beasts::show_beast(&_c.name) {
+                        None => {println!("No beast found with that name.");return}
+                        Some(x) => {
+                            // print out pretty format
+                            println!("<{}>", x.name.to_uppercase());
+                            println!("Elements: {:?}", x.elements);
+                        }
+                    }
+                },
                 args::BeastSubCommand::Match(_c) => {},
-                &args::BeastSubCommand::List => {}
+                &args::BeastSubCommand::List => {
+                    // just print out all the elements
+                    println!("BEASTS:");
+                    for value in &*beasts::BEASTS {
+                        println!("{:#?}", value)
+                    }
+                }
             }
          }
     }
