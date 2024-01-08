@@ -55,7 +55,7 @@ fn main() {
                     }
                 },
                 args::BeastSubCommand::Swap(_c) => {
-
+                    println!("SWAP TO: {:#?}", beasts::swap_to(&_c.name));
                 },
                 args::BeastSubCommand::List => {
                     // just print out all the elements

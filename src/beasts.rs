@@ -75,18 +75,31 @@ pub fn is_effec_against(one: &Element, two: &Element) -> i32 {
     }
 }
 
-pub fn swap_to(against: &Beast) -> Vec<Beast> {
+pub fn swap_to(against: &str) -> Option<HashMap<&str, i32>> {
     // determine what beasts are good against input beast.
+    let beast = self::BEASTS.get(against)?;
     // first, retrieve what elements the beast youre against is aligned with.
-    for &e in against.elements {
+    let mut order: HashMap<&str, i32> = HashMap::new();
+    for &e in beast.elements {
         // then retrieve all the beasts that are aligned to elements that are good against those elements - i.e.
         // for each element that is attached to the opponent beast
+        println!("ELEMENT <{}> IS BAD AGAINST:", &e.name);
         for &x in e.bad_against.iter() {
             // get all the beasts that have that element
-            let beasts: Vec<_> = self::BEASTS.iter().filter(|(key, value)| value.elements.iter().any(|f| f.name == e.name)).collect();
-            println!("{:?}", beasts);
+            println!("ELEMENT: {}", &x);
+            let beasts: Vec<_> = self::BEASTS.iter().filter(|(key, value)| value.elements.iter().any(|f| f.name == x)).collect();
+            println!("beasts: {:?}", beasts);
+            // once we have the beasts, iterate through them and add a count to them in the hashmap
+            for (key, val) in beasts {
+                if (!order.contains_key(val.name)) {
+                    order.insert(val.name, 1);
+                } else {
+                    order.insert(val.name, order[val.name] + 1);
+                }
+            }
+            
         }
     }
-    vec![self::BEASTS["fuegoji"]]
-    // then, create an ordered hashmap of beasts, ordered by the amount of elements they are aligned to.
+    Some(order)
+    
 }
