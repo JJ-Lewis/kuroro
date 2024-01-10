@@ -55,7 +55,21 @@ fn main() {
                     }
                 },
                 args::BeastSubCommand::Swap(_c) => {
-                    println!("SWAP TO: {:#?}", beasts::swap_to(&_c.name));
+                    match beasts::swap_to(&_c.name) {
+                        None => {},
+                        Some(x) => {
+                            
+                            if x.len() > 0 {
+                                println!("QUICK! Swap to:");
+                                for (num, i) in x.iter().enumerate() {
+                                    if num > 1 {println!("OR")}
+                                    println!("{} - {} strengths present", i.0, i.1)
+                                }
+                            } else {
+                                println!("Nothing better to swap to son. Good luck.");
+                            }
+                        }
+                    }
                 },
                 args::BeastSubCommand::List => {
                     // just print out all the elements

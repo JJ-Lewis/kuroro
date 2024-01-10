@@ -75,7 +75,7 @@ pub fn is_effec_against(one: &Element, two: &Element) -> i32 {
     }
 }
 
-pub fn swap_to(against: &str) -> Option<HashMap<&str, i32>> {
+pub fn swap_to(against: &str) -> Option<Vec<(&str, i32)>> {
     // determine what beasts are good against input beast.
     let beast = self::BEASTS.get(against)?;
     // first, retrieve what elements the beast youre against is aligned with.
@@ -83,12 +83,9 @@ pub fn swap_to(against: &str) -> Option<HashMap<&str, i32>> {
     for &e in beast.elements {
         // then retrieve all the beasts that are aligned to elements that are good against those elements - i.e.
         // for each element that is attached to the opponent beast
-        println!("ELEMENT <{}> IS BAD AGAINST:", &e.name);
         for &x in e.bad_against.iter() {
             // get all the beasts that have that element
-            println!("ELEMENT: {}", &x);
             let beasts: Vec<_> = self::BEASTS.iter().filter(|(key, value)| value.elements.iter().any(|f| f.name == x)).collect();
-            println!("beasts: {:?}", beasts);
             // once we have the beasts, iterate through them and add a count to them in the hashmap
             for (key, val) in beasts {
                 if (!order.contains_key(val.name)) {
@@ -97,9 +94,13 @@ pub fn swap_to(against: &str) -> Option<HashMap<&str, i32>> {
                     order.insert(val.name, order[val.name] + 1);
                 }
             }
-            
         }
     }
-    Some(order)
-    
+    // sort into an ordered vector
+    let mut sorted_vec: Vec<_> = order.into_iter().collect();
+    sorted_vec.sort_by(|a, b| b.1.cmp(&a.1));
+    // now filter out anything that isnt the same as the highest beast's count
+    let highest_count = sorted_vec.first()?;
+    let filtered_vec = sorted_vec.iter().filter(|(key, val)| val == &highest_count.1).cloned().collect();
+    Some(filtered_vec)
 }
